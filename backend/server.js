@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const clothingRoutes = require("./routes/clothingRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +19,9 @@ app.use(express.json());
 
 // Authentication Routes
 app.use("/api/auth", authRoutes);
+
+//Clothing Routes
+app.use("/api/clothing", clothingRoutes);
 
 // Home route
 app.get("/", (req, res) => {
