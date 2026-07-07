@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const clothingRoutes = require("./routes/clothingRoutes");
+const swapRoutes = require("./routes/swapRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +23,9 @@ app.use("/api/auth", authRoutes);
 
 //Clothing Routes
 app.use("/api/clothing", clothingRoutes);
+
+//swap Routes
+app.use("/api/swaps", swapRoutes);
 
 // Home route
 app.get("/", (req, res) => {
