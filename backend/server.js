@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const clothingRoutes = require("./routes/clothingRoutes");
 const swapRoutes = require("./routes/swapRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,9 @@ app.use("/api/clothing", clothingRoutes);
 
 //swap Routes
 app.use("/api/swaps", swapRoutes);
+
+//dashboard
+app.use("/api/dashboard", dashboardRoutes);
 
 // Home route
 app.get("/", (req, res) => {

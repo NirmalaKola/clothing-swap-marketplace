@@ -20,6 +20,4 @@ router.put("/:id/accept", protect, acceptSwapRequest);
 router.put("/:id/reject", protect, rejectSwapRequest);
 
 
-
-
 module.exports = router;
