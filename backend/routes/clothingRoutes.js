@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 const { addClothing , getAllClothing,getClothingById,updateClothing,deleteClothing,} = require("../controllers/clothingController");
 
 // Add Clothing (Protected)
-router.post("/", protect, addClothing);
+router.post("/", protect, upload.single("image"), addClothing);
 
 // Get All Clothing Items (Public)
 router.get("/", getAllClothing);

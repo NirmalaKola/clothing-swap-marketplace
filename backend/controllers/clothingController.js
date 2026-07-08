@@ -1,4 +1,8 @@
 const Clothing = require("../models/Clothing");
+const cloudinary = require("../config/cloudinary");
+const fs = require("fs");
+
+// Add Clothing Item
 
 // Add Clothing Item
 const addClothing = async (req, res) => {
@@ -9,16 +13,31 @@ const addClothing = async (req, res) => {
       category,
       size,
       condition,
-      image,
     } = req.body;
 
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload an image",
+      });
+    }
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "clothing-swap",
+    });
+
+    // Delete temporary file
+    fs.unlinkSync(req.file.path);
+
+    // Save clothing item
     const clothing = await Clothing.create({
       title,
       description,
       category,
       size,
       condition,
-      image,
+      image: result.secure_url,
       owner: req.user._id,
     });
 
@@ -28,11 +47,14 @@ const addClothing = async (req, res) => {
       clothing,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  console.error(error);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+    error,
+  });
+}
 };
 
 // Get All Clothing Items
