@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const clothingRoutes = require("./routes/clothingRoutes");
 const swapRoutes = require("./routes/swapRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +31,9 @@ app.use("/api/swaps", swapRoutes);
 
 //dashboard
 app.use("/api/dashboard", dashboardRoutes);
+
+//profile
+app.use("/api/profile", profileRoutes);
 
 // Home route
 app.get("/", (req, res) => {
