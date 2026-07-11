@@ -17,6 +17,6 @@ router.put(
   protect,
   upload.single("image"),
   uploadProfileImage
-);
+)
 
 module.exports = router;

@@ -58,17 +58,68 @@ const addClothing = async (req, res) => {
 };
 
 // Get All Clothing Items
+// Get All Clothing Items with Search, Filter, Pagination & Sorting
 const getAllClothing = async (req, res) => {
   try {
-    const clothings = await Clothing.find()
+    const {
+      search,
+      category,
+      size,
+      condition,
+      page = 1,
+      limit = 5,
+      sort = "newest",
+    } = req.query;
+
+    // Query object
+    let query = {};
+
+    // Search by title
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    // Filter by category
+    if (category) {
+      query.category = category;
+    }
+
+    // Filter by size
+    if (size) {
+      query.size = size;
+    }
+
+    // Filter by condition
+    if (condition) {
+      query.condition = condition;
+    }
+
+    // Sorting
+    const sortOption =
+      sort === "oldest"
+        ? { createdAt: 1 }
+        : { createdAt: -1 };
+
+    // Pagination
+    const skip = (page - 1) * limit;
+
+    const clothings = await Clothing.find(query)
       .populate("owner", "name email")
-      .sort({ createdAt: -1 });
+      .sort(sortOption)
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Clothing.countDocuments(query);
 
     res.status(200).json({
       success: true,
+      totalItems: total,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
       count: clothings.length,
       clothings,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
